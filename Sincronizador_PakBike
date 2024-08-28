@@ -1,0 +1,37 @@
+/*
+    ALGORITMO PARA ACINAMENTO DE BUZZER EM INTERVALOS CONSECUTIVOS.
+    AUTOR: LUCAS TOMAZ DE MOURA
+    VERSÃO: 2023.1.1
+*/
+
+//Definição de pinos de conexão de portas digitais.
+#define Buzzer 3
+#define Botao 4
+
+//Definição de variáveis de controle:
+unsigned long tempoexecucao = 120000; // tempo em milissegundos.
+boolean leituraBotao;
+
+void setup() {
+  pinMode(Buzzer, OUTPUT);
+  pinMode(Botao,INPUT_PULLUP);
+  Serial.begin(9600);
+}
+
+void loop() {
+  leituraBotao = digitalRead(Botao);
+  if(leituraBotao == 0){
+    for(int x=5; x>=1; x--){
+      Serial.println("Tempo até execução da atividade:"+String(x));
+      delay(1000);
+    }
+    digitalWrite(Buzzer,HIGH);
+    delay(1000);
+    digitalWrite(Buzzer,LOW);
+    delay(tempoexecucao);
+    digitalWrite(Buzzer,HIGH);
+    delay(1000);
+    digitalWrite(Buzzer,LOW);
+  }
+
+}
