@@ -26,6 +26,7 @@ volatile unsigned long pulseTime[numReadings]; // Array para armazenar os tempos
 volatile int pulseIndex = 0; // Índice atual no array
 volatile bool pulseDetected = false; // Flag para indicar detecção de pulso
 unsigned long lastPulseTime = 0; // Tempo do último pulso
+unsigned long ledOnTime = 0;
 float rpmArray[4] = {0,0,0,0};
 float rpm = 0;
 unsigned long currentTime = 0;
@@ -103,12 +104,12 @@ void loop()
     lastPulseTime = currentTime;
 }
 
+  // Desliga o LED após 100 ms
+  if (ledState && (millis() - ledOnTime > 100)) {
+    digitalWrite(13, LOW);
+    ledState = false;
+  }
 
-}
-
-
-void teste(){
-  Serial.println("1, funcionou");
 }
 
 
@@ -142,5 +143,10 @@ void handlePulse() {
       rpmArray[1] = rpmArray[0];
 
       pulseDetected = true;
+
+      // Aciona o LED na porta 13 por 100 ms
+      digitalWrite(13, HIGH);
+      ledState = true;
+      ledOnTime = millis();
   }
 }
